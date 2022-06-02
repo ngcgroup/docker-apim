@@ -1,5 +1,5 @@
 [server]
-hostname = "localhost"
+hostname = "apistudio.herokuapp.com"
 #offset=0
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
 #discard_empty_caches = false
