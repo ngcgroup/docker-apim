@@ -1,0 +1,31 @@
+version: '3'
+
+volumes:
+  postgre_shared:
+  postgre_api:
+
+services:
+  shared-db:
+    image: 'postgres:12.9'  
+    ports:
+      - 5432:5432 
+    environment:
+      POSTGRES_DB: shared
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: ${DB_PASS}
+    healthcheck:
+      test: pg_isready -U postgres
+    volumes:
+      - 'postgre_shared:/var/lib/postgresql/data'
+  api-db:
+    image: 'postgres:12.9'  
+    ports:
+      - 6432:5432 
+    healthcheck:
+      test: pg_isready -U postgres
+    environment:
+      POSTGRES_DB: apimgmt
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - 'postgre_api:/var/lib/postgresql/data'
