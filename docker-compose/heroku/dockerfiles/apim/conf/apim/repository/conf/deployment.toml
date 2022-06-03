@@ -1,7 +1,9 @@
 [server]
-hostname = "apistudio.herokuapp.com"
+hostname = "apistudio2.herokuapp.com"
 #offset=0
-base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
+base_path = "${carbon.protocol}://${carbon.host}"
+#base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
+
 #discard_empty_caches = false
 server_role = "default"
 
@@ -118,7 +120,11 @@ auth_token = "$env{ON_PREM_KEY}"
 #key_validation_handler_type = "custom"
 #key_validation_handler_impl = "org.wso2.carbon.apimgt.keymgt.handlers.DefaultKeyValidationHandler"
 
-#[apim.idp]
+[apim.idp]
+server_url = "https://apistudio2.herokuapp.com"
+authorize_endpoint = "https://apistudio2.herokuapp.com/oauth2/authorize"
+oidc_logout_endpoint = "https://apistudio2.herokuapp.com/oidc/logout"
+oidc_check_session_endpoint = "https://apistudio2.herokuapp.com/oidc/checksession"
 #server_url = "https://localhost:${mgt.transport.https.port}"
 #authorize_endpoint = "https://localhost:${mgt.transport.https.port}/oauth2/authorize"
 #oidc_logout_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/logout"
@@ -142,8 +148,8 @@ auth_token = "$env{ON_PREM_KEY}"
 #enable_token_encryption = false
 #enable_token_hashing = false
 
-#[apim.devportal]
-#url = "https://localhost:${mgt.transport.https.port}/devportal"
+[apim.devportal]
+url = "https://apistudio2.herokuapp.com/devportal"
 #enable_application_sharing = false
 #if application_sharing_type, application_sharing_impl both defined priority goes to application_sharing_impl
 #application_sharing_type = "default" #changed type, saml, default #todo: check the new config for rest api
@@ -264,3 +270,5 @@ password = "${admin.password}"
 enable = true
 allow_refresh_tokens = true
 iat_validity_period = "1h"
+[transport.https.properties]
+proxyPort = 443
