@@ -12,7 +12,7 @@ const Settings = {
             forwardedHeader: 'X-Forwarded-For',
         },
         origin: {
-            host: 'apistudio2.herokuapp.com',
+            host: 'localhost',
         },
         subscriptionLimit: 1000,
         subscribeApplicationLimit: 5000,

@@ -18,7 +18,7 @@ const AppConfig = {
         origin: {
             // Used to construct the loopback origin, It's very unlike you need to change this hostname,
             // It is `localhost` in 99.99% case, If you want to change server host name change it in deployment.toml
-            host: 'apistudio2.herokuapp.com',
+            host: 'localhost',
         },
         feedback: { // If enabled, Feedback form option(an icon) will be available in the footer LHS bottom
             enable: false,
