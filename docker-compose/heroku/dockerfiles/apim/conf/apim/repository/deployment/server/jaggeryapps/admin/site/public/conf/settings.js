@@ -13,7 +13,7 @@ const AppConfig = {
         */
         customUrl: { // Dynamically set the redirect origin according to the forwardedHeader host|proxyPort combination
             enabled: true,
-            forwardedHeader: 'X-Forwarded-For',
+            forwardedHeader: 'X-Forwarded-Host',
         },
         origin: {
             host: 'localhost', // Used to construct the loopback origin,

@@ -13,7 +13,7 @@ const AppConfig = {
         */
         customUrl: { // Dynamically set the redirect origin according to the forwardedHeader host|proxyPort combination
             enabled: true,
-            forwardedHeader: 'X-Forwarded-For',
+            forwardedHeader: 'X-Forwarded-Host',
         },
         origin: {
             // Used to construct the loopback origin, It's very unlike you need to change this hostname,

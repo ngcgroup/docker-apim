@@ -9,7 +9,7 @@ const Settings = {
         */
         customUrl: {
             enabled: true,
-            forwardedHeader: 'X-Forwarded-For',
+            forwardedHeader: 'X-Forwarded-Host',
         },
         origin: {
             host: 'localhost',
