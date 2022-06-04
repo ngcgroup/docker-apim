@@ -77,3 +77,4 @@
    https://localhost:8243
    https://localhost:8280
    ```
+8.  CLEANUP : https://medium.com/@snsavithrik1/how-to-completely-remove-an-api-from-wso2-api-manager-7ed8c6de0eba
