@@ -74,6 +74,14 @@ https_endpoint = "https://localhost:${https.nio.port}"
 websub_event_receiver_http_endpoint = "http://localhost:9021"
 websub_event_receiver_https_endpoint = "https://localhost:8021"
 
+[[apim.gateway.environment.virtual_host]]
+ws_endpoint = "ws://apistudio2.herokuapp.com:9099"
+wss_endpoint = "wss://apistudio2.herokuapp.com:8099"
+http_endpoint = "http://apistudio2.herokuapp.com/gateway"
+https_endpoint = "https://apistudio2.herokuapp.com/gateway"
+websub_event_receiver_http_endpoint = "http://apistudio2.herokuapp.com:9021"
+websub_event_receiver_https_endpoint = "https://apistudio2.herokuapp.com:8021"
+
 [apim.sync_runtime_artifacts.gateway]
 gateway_labels =["Default"]
 

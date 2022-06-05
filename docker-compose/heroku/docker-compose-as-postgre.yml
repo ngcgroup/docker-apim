@@ -14,7 +14,9 @@ services:
       POSTGRES_USER: pguser
       POSTGRES_PASSWORD: ${DB_PASS}
     healthcheck:
-      test: pg_isready -U postgres
+      test: [ "CMD-SHELL", "PGPASSWORD=$${POSTGRES_PASSWORD} echo pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+
+      #test: pg_isready -U pguser
     volumes:
       - 'postgre_shared:/var/lib/postgresql/data'
   api-db:
@@ -22,7 +24,8 @@ services:
     ports:
       - 6432:5432 
     healthcheck:
-      test: pg_isready -U postgres
+      test: [ "CMD-SHELL", "PGPASSWORD=$${POSTGRES_PASSWORD} echo pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      #test: pg_isready -U pguser
     environment:
       POSTGRES_DB: apimgmt
       POSTGRES_USER: pguser
