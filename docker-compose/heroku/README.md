@@ -78,3 +78,7 @@
    https://localhost:8280
    ```
 8.  CLEANUP : https://medium.com/@snsavithrik1/how-to-completely-remove-an-api-from-wso2-api-manager-7ed8c6de0eba
+9. Setup Key Manager: https://apim.docs.wso2.com/en/latest/administer/key-managers/configure-keycloak-connector/
+
+https://bhn-iam.herokuapp.com/auth/realms/apistudio2/.well-known/openid-configuration
+
