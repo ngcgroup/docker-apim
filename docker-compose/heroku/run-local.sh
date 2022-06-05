@@ -12,4 +12,6 @@ IFS=$TEMPIFS;
 DB_PASS=password123
 export DATABASE_URL=postgres://pguser:${DB_PASS}@api-db:5432/apimgmt # api database url
 export HEROKU_POSTGRESQL_YELLOW_URL=postgres://pguser:${DB_PASS}@shared-db:5432/shared  #shared database url
-docker-compose -f docker-compose.yml -f docker-compose-as-postgre.yml up --build -d
+
+docker-compose -f docker-compose.yml -f docker-compose-as-postgre.yml build  --build-arg local=true
+docker-compose -f docker-compose.yml -f docker-compose-as-postgre.yml up -d

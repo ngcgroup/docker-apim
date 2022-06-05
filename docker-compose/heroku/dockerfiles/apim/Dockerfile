@@ -29,7 +29,11 @@ USER wso2carbon
 # build arguments for external artifacts
 ARG MYSQL_CONNECTOR_VERSION=8.0.17
 ARG POSTGRE_CONNECTOR_VERSION=42.3.6
+ARG local=false
 ADD ./conf/apim /home/wso2carbon/wso2-config-volume
+USER root
+RUN if [ "$local" = "true" ]; then mv /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.local /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml && rm -f /home/wso2carbon/wso2-config-volume/repository/conf/deployment; fi
+USER wso2carbon
 ADD client-truststore.jks ${WSO2_SERVER_HOME}/repository/resources/security/
 
 # add MySQL JDBC connector to server home as a third party library
