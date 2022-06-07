@@ -161,7 +161,7 @@ url = "https://apistudio2.herokuapp.com/devportal"
 #enable_ratings = true
 #enable_forum = true
 #enable_anonymous_mode=true
-#enable_cross_tenant_subscriptions = true
+enable_cross_tenant_subscriptions = true
 #default_reserved_username = "apim_reserved_user"
 
 [apim.cors]
