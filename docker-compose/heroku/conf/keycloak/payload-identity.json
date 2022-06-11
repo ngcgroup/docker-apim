@@ -1,0 +1,5 @@
+
+  {
+  "client_name":"rest_api_admin_identity",
+  "grant_types":["client_credentials", "password", "refresh_token"]
+  }

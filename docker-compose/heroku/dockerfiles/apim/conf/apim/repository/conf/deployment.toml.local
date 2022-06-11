@@ -142,7 +142,7 @@ auth_token = "$env{ON_PREM_KEY}"
 #enable_token_encryption = false
 #enable_token_hashing = false
 
-#[apim.devportal]
+[apim.devportal]
 #url = "https://localhost:${mgt.transport.https.port}/devportal"
 #enable_application_sharing = false
 #if application_sharing_type, application_sharing_impl both defined priority goes to application_sharing_impl
@@ -264,3 +264,11 @@ password = "${admin.password}"
 enable = true
 allow_refresh_tokens = true
 iat_validity_period = "1h"
+
+[admin_service.wsdl]
+enable=true
+
+[resource.access_control]
+context = "/api/identity/*"
+secure = false
+http_method = "all"

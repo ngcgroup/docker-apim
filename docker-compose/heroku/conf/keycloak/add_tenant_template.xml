@@ -1,0 +1,33 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://services.mgt.tenant.carbon.wso2.org" xmlns:xsd="http://beans.common.stratos.carbon.wso2.org/xsd">
+   <soap:Header/>
+   <soap:Body>
+      <ser:addTenant>
+         <!--Optional:-->
+         <ser:tenantInfoBean>
+            <!--Optional:-->
+            <xsd:active>true</xsd:active>
+            <!--Optional:-->
+            <xsd:admin>USERNAME</xsd:admin>
+            <!--Optional:-->
+            <xsd:adminPassword>PASSWORD</xsd:adminPassword>
+            <!--Optional:-->
+     
+            <!--Optional:-->
+            <xsd:email>EMAIL</xsd:email>
+            <!--Optional:-->
+            <xsd:firstname>FIRSTNAME</xsd:firstname>
+            <!--Optional:-->
+            <xsd:lastname>LASTNAME</xsd:lastname>
+            <!--Optional:-->
+            
+            <!--Optional:-->
+            <xsd:successKey>true</xsd:successKey>
+            <!--Optional:-->
+            <xsd:tenantDomain>DOMAIN</xsd:tenantDomain>
+            <!--Optional:-->
+            <!--Optional:-->
+            <xsd:usagePlan>demo</xsd:usagePlan>
+         </ser:tenantInfoBean>
+      </ser:addTenant>
+   </soap:Body>
+</soap:Envelope>
