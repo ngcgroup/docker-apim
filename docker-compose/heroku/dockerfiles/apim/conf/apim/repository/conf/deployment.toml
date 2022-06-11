@@ -188,6 +188,9 @@ allow_credentials = false
 #hostName = "0.0.0.0"
 #port = 11224
 
+[admin_service.wsdl]
+enable=true
+
 #[apim.throttling.event_management]
 #hostName = "0.0.0.0"
 #port = 10005
