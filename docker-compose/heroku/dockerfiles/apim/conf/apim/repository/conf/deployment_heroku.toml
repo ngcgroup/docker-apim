@@ -1,6 +1,5 @@
 [server]
-hostname = "$env{API_HOSTNAME}"
-apiGateway = "$env{API_GATEWAY}"
+hostname = "apistudio.herokuapp.com"
 #offset=0
 #base_path = "${carbon.protocol}://${carbon.host}"
 base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
@@ -68,12 +67,13 @@ show_as_token_endpoint_url = true
 service_url = "https://localhost:${mgt.transport.https.port}/services/"
 username= "${admin.username}"
 password= "${admin.password}"
-ws_endpoint = "ws://${apiGateway}:9099"
-wss_endpoint = "wss://${apiGateway}:8099"
-http_endpoint = "http://${apiGateway}"
-https_endpoint = "https://${apiGateway}"
-websub_event_receiver_http_endpoint = "http://${apiGateway}:9021"
-websub_event_receiver_https_endpoint = "https://${apiGateway}:8021"
+ws_endpoint = "ws://bhnapigw.herokuapp.com:9099"
+wss_endpoint = "wss://bhnapigw.herokuapp.com:8099"
+http_endpoint = "http://bhnapigw.herokuapp.com"
+https_endpoint = "https://bhnapigw.herokuapp.com"
+websub_event_receiver_http_endpoint = "http://bhnapigw.herokuapp.com:9021"
+websub_event_receiver_https_endpoint = "https://bhnapigw.herokuapp.com:8021"
+
 
 [apim.sync_runtime_artifacts.gateway]
 gateway_labels =["Default"]
@@ -122,10 +122,10 @@ auth_token = "$env{ON_PREM_KEY}"
 #key_validation_handler_impl = "org.wso2.carbon.apimgt.keymgt.handlers.DefaultKeyValidationHandler"
 
 [apim.idp]
-server_url = "https://${hostname}"
-authorize_endpoint = "https://${hostname}/oauth2/authorize"
-oidc_logout_endpoint = "https://${hostname}/oidc/logout"
-oidc_check_session_endpoint = "https://${hostname}/oidc/checksession"
+server_url = "https://apistudio2.herokuapp.com"
+authorize_endpoint = "https://apistudio2.herokuapp.com/oauth2/authorize"
+oidc_logout_endpoint = "https://apistudio2.herokuapp.com/oidc/logout"
+oidc_check_session_endpoint = "https://apistudio2.herokuapp.com/oidc/checksession"
 #server_url = "https://localhost:${mgt.transport.https.port}"
 #authorize_endpoint = "https://localhost:${mgt.transport.https.port}/oauth2/authorize"
 #oidc_logout_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/logout"
@@ -150,7 +150,7 @@ oidc_check_session_endpoint = "https://${hostname}/oidc/checksession"
 #enable_token_hashing = false
 
 [apim.devportal]
-url = "https://${hostname}/devportal"
+url = "https://apistudio2.herokuapp.com/devportal"
 #enable_application_sharing = false
 #if application_sharing_type, application_sharing_impl both defined priority goes to application_sharing_impl
 #application_sharing_type = "default" #changed type, saml, default #todo: check the new config for rest api

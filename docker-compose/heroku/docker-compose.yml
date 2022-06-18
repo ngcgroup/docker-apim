@@ -15,29 +15,21 @@
 version: '2.4'
 services:
   api-manager:
-    build: ./dockerfiles/apim
+    image: 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-apim:latest
     healthcheck:
       test: ["CMD", "nc", "-z","localhost", "9443"]
       interval: 10s
       start_period: 180s
       retries: 20
     environment:
-      API_DATABASE_URL: ${DATABASE_URL}
-      SHARED_DATABASE_URL: ${HEROKU_POSTGRESQL_YELLOW_URL}
+      API_DATABASE_URL: ${API_DATABASE_URL}
+      SHARED_DATABASE_URL: ${SHARED_DATABASE_URL}
       ADMIN_USER: ${ADMIN_USER}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       ON_PREM_KEY: ${ON_PREM_KEY}
-
-    depends_on: [api-db, shared-db]
-    depends_on: 
-      api-db:
-        condition: service_healthy
-      shared-db:
-        condition: service_healthy        
-#      mysql:
-#        condition: service_healthy
-#    volumes:
-#      - ./conf/apim:/home/wso2carbon/wso2-config-volume
+      API_HOSTNAME: ${API_HOSTNAME}
+      API_GATEWAY: ${API_GATEWAY}
+      b7a_log_level: DEBUG
     ports:
       - "9443:9443"
       - "8280:8280"
