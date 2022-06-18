@@ -18,6 +18,7 @@ hs_err_pid*
 *.exe
 *.tar.gz
 *.zip
+!bundle.tar.gz
 
 # IntelliJ IDEA
 .idea/

@@ -1,7 +1,7 @@
 {
   "EnableMonetization" : false,
   "EnableRecommendation" : false,
-  "EnablePerTenantServiceProviderCreation" : "true",
+  "EnablePerTenantServiceProviderCreation" : true,
   "IsUnlimitedTierPaid" : false,
   "ExtensionHandlerPosition": "bottom",
   "RESTAPIScopes": {

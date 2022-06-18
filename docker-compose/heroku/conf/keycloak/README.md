@@ -17,3 +17,5 @@ https://medium.com/@maheeka/wso2-admin-services-c61b7d856272
 
 ./add_tenant.sh -au $ADMIN_USER -ap $ADMIN_PASSWORD -tu partner4 -tp $ADMIN_PASSWORD -tf p4f1 -tl p4l1  -td partner4.com -te admin@partner4.com --server localhost --port 9443
 ```
+
+https://athiththan11.medium.com/tenant-specific-devportal-publisher-service-providers-84d98c9458c6
