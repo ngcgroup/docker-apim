@@ -21,7 +21,7 @@ if [ "$API_DATABASE_URL" != "" ]; then
             export DB_TYPE="mysql"
             export DB_DRIVER="com.mysql.cj.jdbc.Driver"
             export DB_VALIDATION_QUERY="SELECT 1"
-            export DB_URL="jdbc:mysql://$DB_ADDR:$DB_PORT/$DB_DATABASE"
+            export DB_URL="jdbc:mysql://$DB_ADDR:$DB_PORT/$DB_DATABASE?$JDBC_PARAMS"
         fi
 
         echo "DB_ADDR=$DB_ADDR, DB_PORT=$DB_PORT, DB_DATABASE=$DB_DATABASE, DB_USER=$DB_USER, DB_PASSWORD=$DB_PASSWORD, JDBC_PARAMS=$JDBC_PARAMS"
@@ -50,7 +50,7 @@ if [ "$SHARED_DATABASE_URL" != "" ]; then
             export S_DB_TYPE="mysql"
             export S_DB_DRIVER="com.mysql.cj.jdbc.Driver"
             export S_DB_VALIDATION_QUERY="SELECT 1"
-            export S_DB_URL="jdbc:mysql://$S_DB_ADDR:$S_DB_PORT/$S_DB_DATABASE"
+            export S_DB_URL="jdbc:mysql://$S_DB_ADDR:$S_DB_PORT/$S_DB_DATABASE?$S_JDBC_PARAMS"
         fi
 
         echo "DB_ADDR=$S_DB_ADDR, DB_PORT=$S_DB_PORT, DB_DATABASE=$S_DB_DATABASE, DB_USER=$S_DB_USER, DB_PASSWORD=$S_DB_PASSWORD DB_VENDOR=$S_DB_VENDOR;DB_URL=$S_DB_URL;DB_TYPE=$S_DB_TYPE;DB_VALIDATION_QUERY=$S_DB_VALIDATION_QUERY; "
@@ -58,6 +58,18 @@ if [ "$SHARED_DATABASE_URL" != "" ]; then
 
 fi
 
+set -e -x
+
+for envvar in $(env |grep "ENV_"); do 
+    TEMPIFS=$IFS; IFS='='; 
+    read -ra my_array <<< "$envvar"; 
+    IFS=$TEMPIFS; echo $envvar; 
+    key=${my_array[0]}; 
+    value=${my_array[1]}; 
+    sed -i "s/$key/$value/g" /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.template;
+done
+
+cp /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.template /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
 
 set -e
 /home/wso2carbon/docker-entrypoint.sh

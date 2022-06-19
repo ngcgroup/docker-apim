@@ -56,10 +56,10 @@ spec:
               value: ${ADMIN_PASSWORD}
             - name: ON_PREM_KEY
               value: ${ON_PREM_KEY}
-            - name: API_HOSTNAME
-              value: ${API_HOSTNAME}
-            - name: API_GATEWAY
-              value: ${API_GATEWAY}
+            - name: ENV_API_HOSTNAME
+              value: ${ENV_API_HOSTNAME}
+            - name: ENV_API_GATEWAY
+              value: ${ENV_API_GATEWAY}
           image: 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-apim:latest
           name: apistudio
           ports:
@@ -73,7 +73,7 @@ status: {}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: iam
+  namespace: api
   name: ingress-nginx
   labels:
     app.kubernetes.io/name: ingress-nginx
@@ -86,10 +86,10 @@ spec:
   tls:
   - secretName: tls-cert
     hosts:
-    - apistudio.bhn.technology
-    - apigw.bhn.technology
+    - ${ENV_API_HOSTNAME}
+    - ${ENV_API_GATEWAY}
   rules:
-    - host: apistudio.bhn.technology
+    - host: ${ENV_API_HOSTNAME}
       http:
         paths:        
         - path: /
@@ -99,7 +99,7 @@ spec:
               name: apistudio
               port:
                 number: 9443
-    - host: apigw.bhn.technology
+    - host: ${ENV_API_GATEWAY}
       http:
         paths:        
         - path: /
