@@ -24,6 +24,8 @@ url = "$env{DB_URL}"
 username = "$env{DB_USER}"
 password = "$env{DB_PASSWORD}"
 validationQuery = "$env{DB_VALIDATION_QUERY}"
+pool_options.maxActive=300
+pool_options.useSSL=false
 
 [database.shared_db]
 type = "$env{S_DB_TYPE}"
@@ -33,6 +35,8 @@ url = "$env{S_DB_URL}"
 username = "$env{S_DB_USER}"
 password = "$env{S_DB_PASSWORD}"
 validationQuery = "$env{S_DB_VALIDATION_QUERY}"
+pool_options.maxActive=300
+pool_options.useSSL=false
 
 [keystore.tls]
 file_name =  "wso2carbon.jks"
