@@ -1,0 +1,15 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: test-realm
+  namespace: iam
+  labels:
+    app: iam-keycloak-ops
+spec:
+  unmanaged: true
+  realm:
+    id: "basic"
+    realm: "basic"
+  instanceSelector:
+    matchLabels:
+      app: iam-keycloak-ops

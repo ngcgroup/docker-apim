@@ -1,0 +1,12 @@
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: iam-keycloak-ops
+  namespace: iam
+  labels:
+    app: sso
+spec:
+  unmanaged: true
+  external:
+    enabled: true
+    url: https://iam.bhn.technology

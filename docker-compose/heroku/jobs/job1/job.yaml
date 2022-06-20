@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kubernetes-job-example
+  namespace: api
+  labels:
+    jobgroup: wso2-bootstrap-job
+spec:
+  template:
+    metadata:
+      name: kubejob
+      labels:
+        jobgroup: bootstrap
+    spec:
+      containers:
+      - name: c
+        image: 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-bootstrap-job:latest
+        envFrom:
+          - configMapRef:
+              name: env-bindings-cm-job1        
+        args: ["50"]
+      restartPolicy: Never

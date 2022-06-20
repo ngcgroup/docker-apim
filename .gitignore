@@ -35,3 +35,5 @@ rat.txt
 # exception to the rule
 !**/files/.gitkeep
 **/kc-km.json
+**/kcadm.config
+**/env-file
