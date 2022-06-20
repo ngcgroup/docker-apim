@@ -20,4 +20,3 @@ fi
 set -e
 kubectl create configmap env-bindings-cm-job1 --from-env-file=env-file -n $namespace
 kubectl create  -f job.yaml $dry_run
-kubectl delete configmap env-bindings-cm-job1 -n $namespace

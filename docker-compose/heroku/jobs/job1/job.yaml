@@ -18,5 +18,5 @@ spec:
         envFrom:
           - configMapRef:
               name: env-bindings-cm-job1        
-        args: ["50"]
+        args: ["5"]
       restartPolicy: Never

@@ -32,6 +32,11 @@ function parse_args() {
         shift # past argument
         #shift # past value
         ;;                
+       -s|--skip-download)
+        skip_download="true"
+        shift # past argument
+        #shift # past value
+        ;;                
       -*|--*)
         echo "Unknown option $1"
         exit 1
