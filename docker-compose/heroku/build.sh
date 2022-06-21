@@ -1,40 +1,18 @@
+
 #!/bin/bash
 set -e
-set -x
-
-POSITIONAL_ARGS=()
-
-while [[ $# -gt 0 ]]; do
-  case $1 in
-    -p|--push)
-        docker_push="true"
-        shift # past argument
-        #shift # past value
-        ;; 
-	-l|--login)
-        docker_login="true"
-        shift # past argument
-        #shift # past value
-        ;;                       
-    -*|--*)
-      echo "Unknown option $1"
-      exit 1
-      ;;
-    *)
-      POSITIONAL_ARGS+=("$1") # save positional arg
-      shift # past argument
-      ;;
-  esac
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+COMMON_DIR=$SCRIPT_DIR/../../common/scripts
+echo $COMMON_DIR
+for i in $COMMON_DIR/*;
+  do source $i
 done
+set -x -e
 
+registry=982306614752.dkr.ecr.us-west-2.amazonaws.com
+image="wso2-apim:latest"
 cd dockerfiles/apim
-docker build -t wso2-apim .
-docker tag wso2-apim:latest 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-apim:latest
-
-if [ "$docker_login" == "true" ];then
-	aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 982306614752.dkr.ecr.us-west-2.amazonaws.com
-fi
-
-if [ "$docker_push" == "true" ];then
-	docker push 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-apim:latest
-fi
+docker build -t $image .
+docker tag $image $registry/$image
+docker_login $registry
+docker_push $registry/$image

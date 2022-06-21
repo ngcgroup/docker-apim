@@ -37,11 +37,18 @@ $ aws ecr get-login-password --profile architecture | docker login --username AW
 # keycloak admin auth
 $ kcadm config credentials --server https://iam.bhn.technology/auth --realm master --user ${KEYCLOAK_USER} --password ${KEYCLOAK_PASSWORD} --config /opt/keycloak/tools/kcadm.config
 
+
+$ bearer_token=$(curl -X POST 'https://iam.bhn.technology/auth/realms/master/protocol/openid-connect/token' \
+     --data-urlencode "username=${KEYCLOAK_USER}" \
+     --data-urlencode "password=${KEYCLOAK_PASSWORD}" \
+     --data-urlencode 'grant_type=password' \
+     --data-urlencode 'client_id=admin-cli' \
+      | jq -r '.access_token')
 #keycloak realm creation
 $ kcadm create realms -s realm=demorealm -s enabled=true -o --config /opt/keycloak/tools/kcadm.config
 
 $ kcadm create clients --config /opt/keycloak/tools/kcadm.config -r demorealm -f my_client.json -s clientId=my_client2 -s 'redirectUris=["http://localhost:8980/myapp/*"]' -i
-
+$ kubectl logs -f $(kubectl get po -n api | grep kubernetes-job-example | awk '{print $1}') -n api
 ```
 
 
@@ -49,3 +56,4 @@ $ kcadm create clients --config /opt/keycloak/tools/kcadm.config -r demorealm -f
 1. https://www.keycloak.org/getting-started/getting-started-operator-kubernetes
 2. https://operatorhub.io/operator/keycloak-operator
 3. https://www.keycloak.org/docs/latest/server_installation/
+4. https://apim.docs.wso2.com/en/latest/administer/key-managers/configure-keycloak-connector/

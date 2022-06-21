@@ -39,7 +39,7 @@ ADD ./apps/deployment/server/jaggeryapps/devportal/site/public/dist/bundle.tar.g
 USER root
 RUN if [ "$local" = "true" ]; then mv /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.local /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml && rm -f /home/wso2carbon/wso2-config-volume/repository/conf/deployment; fi
 USER wso2carbon
-ADD client-truststore.jks ${WSO2_SERVER_HOME}/repository/resources/security/
+#ADD client-truststore.jks ${WSO2_SERVER_HOME}/repository/resources/security/
 
 # add MySQL JDBC connector to server home as a third party library
 ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/mysql/mysql-connector-java/${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar ${WSO2_SERVER_HOME}/repository/components/dropins/

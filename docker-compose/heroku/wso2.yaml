@@ -46,20 +46,8 @@ spec:
     spec:
       containers:
         - env:
-            - name: API_DATABASE_URL
-              value: ${API_DATABASE_URL}
-            - name: SHARED_DATABASE_URL
-              value: ${SHARED_DATABASE_URL}
-            - name: ADMIN_USER
-              value: ${ADMIN_USER}
-            - name: ADMIN_PASSWORD
-              value: ${ADMIN_PASSWORD}
-            - name: ON_PREM_KEY
-              value: ${ON_PREM_KEY}
-            - name: ENV_API_HOSTNAME
-              value: ${ENV_API_HOSTNAME}
-            - name: ENV_API_GATEWAY
-              value: ${ENV_API_GATEWAY}
+            - name: PLACEHOLDER
+              value: "true"
           image: 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-apim:latest
           name: apistudio
           ports:
@@ -67,6 +55,22 @@ spec:
             - containerPort: 8280
             - containerPort: 8243
           resources: {}
+          volumeMounts:
+            - name: keycloak-keystore
+              readOnly: true
+              mountPath: /home/wso2carbon/wso2-config-volume/keycloak.crt
+              subPath: keycloak.crt
+          envFrom:
+            - configMapRef:
+                name: env-bindings-cm
+      volumes:
+        - name: keycloak-keystore
+          secret:
+            secretName: keycloak-keystore
+            items:
+              - key: keycloak.crt
+                path: keycloak.crt
+            defaultMode: 420  
       restartPolicy: Always
 status: {}
 ---
@@ -86,10 +90,10 @@ spec:
   tls:
   - secretName: tls-cert
     hosts:
-    - ${ENV_API_HOSTNAME}
-    - ${ENV_API_GATEWAY}
+    - apigw.bhn.technology
+    - apistudio.bhn.technology
   rules:
-    - host: ${ENV_API_HOSTNAME}
+    - host: apistudio.bhn.technology
       http:
         paths:        
         - path: /
@@ -99,7 +103,7 @@ spec:
               name: apistudio
               port:
                 number: 9443
-    - host: ${ENV_API_GATEWAY}
+    - host: apigw.bhn.technology
       http:
         paths:        
         - path: /

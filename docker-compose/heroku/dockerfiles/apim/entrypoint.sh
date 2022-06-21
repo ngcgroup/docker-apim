@@ -70,6 +70,7 @@ for envvar in $(env |grep "ENV_"); do
 done
 
 cp /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.template /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
+keytool -import -trustcacerts -alias keycloak -file /home/wso2carbon/wso2-config-volume/keycloak.crt -keystore ${WSO2_SERVER_HOME}/repository/resources/security/client-truststore.jks -storepass wso2carbon -noprompt
 
 set -e
 /home/wso2carbon/docker-entrypoint.sh
