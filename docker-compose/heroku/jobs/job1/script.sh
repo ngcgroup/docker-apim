@@ -11,23 +11,50 @@ bearer_token=$(curl -s -X POST 'https://iam.bhn.technology/auth/realms/master/pr
 
 export PATH=/opt/keycloak/bin:$PATH
 iam_server=https://iam.bhn.technology/auth
+api_admin_server_host=apistudio.bhn.technology
+api_admin_server_url=https://${api_admin_server_host}
 session_config=/opt/scripts/kcadm.config 
+api_realm=apistudio
+
+## KEY MANAGER SETUP START ###
+kc_km_client_id=apistudio-keymanager-client
+
+
 kcadm.sh config credentials --server ${iam_server} --realm master --user ${KEYCLOAK_USER} --password ${KEYCLOAK_PASSWORD} --config /opt/scripts/kcadm.config      
-kcadm.sh get realms --config $session_config  --server ${iam_server}
-kcadm.sh create realms --config $session_config -s realm=apistudio -s enabled=true -o
+#kcadm.sh get realms --config $session_config  --server ${iam_server}
+kcadm.sh create realms --config $session_config -s realm=${api_realm} -s enabled=true -o
 
-curl -s -H "Authorization: Bearer $bearer_token" -X POST 'https://iam.bhn.technology/auth/admin/realms/apistudio/client-scopes' -d '{ "name": "default",  "protocol": "openid-connect"}' -H 'Content-Type: application/json'
+curl -s -H "Authorization: Bearer $bearer_token" -X POST "${iam_server}/auth/admin/realms/${api_realm}/client-scopes" -d '{ "name": "default",  "protocol": "openid-connect"}' -H 'Content-Type: application/json'
 
-kcadm.sh create clients --config $session_config -r apistudio -f - <apistudio-key-manager.bhn.json
+cat apistudio-key-manager.bhn.json.template | sed "s/KC_KM_CLIENT_ID/${kc_km_client_id}/g" | sed "s/APISTUDIO_URL/${api_admin_server_host}/g" > apistudio-key-manager.bhn.json
+kcadm.sh create clients --config $session_config -r ${api_realm} -f - < apistudio-key-manager.bhn.json
 
 # add service client role
-kcadm.sh add-roles --config $session_config -r apistudio  --uusername service-account-apistudio-keymanager-client \
+kcadm.sh add-roles --config $session_config -r ${api_realm}  --uusername service-account-${kc_km_client_id} \
  --cclientid realm-management --rolename create-client --rolename manage-clients \
  --rolename query-clients --rolename view-clients
 
-client_id=$(kcadm.sh get clients --config $session_config -r apistudio | jq '.[] | select ( .clientId == "apistudio-keymanager-client" ) | .id' -r)
-secret=$(kcadm.sh get clients/$client_id/client-secret --config $session_config -r apistudio | jq '.value' -r)
+AUTH=$(echo $API_REST_ADMIN_CLIENT_ID:$API_REST_ADMIN_CLIENT_SECRET | base64)
+TOKEN_PAYLOAD=`curl -H "Authorization: Basic $AUTH" \
+	-d "grant_type=client_credentials&scope=apim:admin apim:tier_view" \
+	-s -X POST ${api_admin_server_url}/oauth2/token --http1.1`
+TOKEN=$(echo $TOKEN_PAYLOAD | jq .access_token --raw-output)
+echo $TOKEN
 
+# this is just the keycloak guid - not the client id ###
+kc_id=$(kcadm.sh get clients --config $session_config -r ${api_realm} | jq ".[] | select ( .clientId == \"${kc_km_client_id}\" ) | .id" -r)
+kc_km_client_secret=$(kcadm.sh get clients/${kc_id}/client-secret --config $session_config -r ${api_realm} | jq '.value' -r)
+
+
+cat kc-km.json.template | sed "s/KC_KM_CLIENT_SECRET/${kc_km_client_secret}/g" \
+	| sed "s/KC_KM_CLIENT_ID/${kc_km_client_id}/g" \
+	| sed "s/APISTUDIO_URL/${api_admin_server_host}/g" > kc-km.json
+curl -s  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d @kc-km.json -X POST ${api_admin_server}/api/am/admin/v3/key-managers
+
+
+curl -s  -H "Authorization: Bearer $TOKEN" ${api_admin_server_url}/api/am/admin/v3/key-managers | jq .
+
+## KEY MANAGER SETUP COMPLETE ###
 
 for ((i=1;i<=$LOOP_COUNT;i++)); 
 do

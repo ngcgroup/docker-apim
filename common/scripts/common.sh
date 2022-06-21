@@ -27,6 +27,11 @@ function parse_args() {
         shift # past argument
         #shift # past value
         ;;
+      --force)
+        force="true"
+        shift # past argument
+        #shift # past value
+        ;;        
       --cleanup)
         cleanup="true"
         shift # past argument

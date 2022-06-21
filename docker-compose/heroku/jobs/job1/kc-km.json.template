@@ -1,0 +1,52 @@
+{
+  "name": "bhniam",
+  "displayName": "BHN IAM KM",
+  "type": "KeyCloak",
+  "description": "This is the BHN IAM manager for Developers",
+  "wellKnownEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/.well-known/openid-configuration",
+  "introspectionEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/token/introspect",
+  "clientRegistrationEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/clients-registrations/openid-connect",
+  "tokenEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/token",
+  "revokeEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/revoke",
+  "userInfoEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/userinfo",
+  "authorizeEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/auth",
+  "certificates": {
+    "type": "JWKS",
+    "value": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/certs"
+  },
+  "issuer": "https://APISTUDIO_URL/auth/realms/apistudio2",
+  "scopeManagementEndpoint": "",
+  "availableGrantTypes": [
+        "authorization_code", "implicit", "refresh_token","password",
+        "client_credentials","urn:ietf:params:oauth:grant-type:device_code",
+        "urn:ietf:params:oauth:grant-type:ciba"
+  ],
+  "enableTokenGeneration": true,
+  "enableTokenEncryption": false,
+  "enableTokenHashing": false,
+  "enableMapOAuthConsumerApps": false,
+  "enableOAuthAppCreation": true,
+  "enableSelfValidationJWT": true,
+  "claimMapping": [
+    {
+      "remoteClaim": "http://idp.org/username",
+      "localClaim": "http://wso2.org/username"
+    }
+  ],
+  "consumerKeyClaim": "azp",
+  "scopesClaim": "scope",
+  "tokenValidation": [
+    {
+      "id": 0,
+      "enable": false,
+      "type": "REFERENCE",
+      "value": {}
+    }
+  ],
+  "enabled": true,
+  "additionalProperties": {
+    "self_validate_jwt": true,
+    "client_id": "KC_KM_CLIENT_ID",
+    "client_secret": "KC_KM_CLIENT_SECRET"
+  }
+}

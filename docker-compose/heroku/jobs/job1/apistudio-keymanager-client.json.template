@@ -1,16 +1,16 @@
 {
-    "clientId": "apistudio-keymanager-client",
-    "rootUrl": "https://apistudio.bhn.technology/",
-    "adminUrl": "https://apistudio.bhn.technology/",
+    "clientId": "KC_KM_CLIENT_ID",
+    "rootUrl": "https://APISTUDIO_URL/",
+    "adminUrl": "https://APISTUDIO_URL/",
     "surrogateAuthRequired": false,
     "enabled": true,
     "alwaysDisplayInConsole": false,
     "clientAuthenticatorType": "client-secret",
     "redirectUris": [
-        "https://apistudio.bhn.technology/*"
+        "https://APISTUDIO_URL/*"
     ],
     "webOrigins": [
-        "https://apistudio.bhn.technology"
+        "https://APISTUDIO_URL"
     ],
     "notBefore": 0,
     "bearerOnly": false,
