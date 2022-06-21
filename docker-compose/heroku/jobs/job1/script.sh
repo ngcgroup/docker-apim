@@ -26,7 +26,7 @@ kcadm.sh create realms --config $session_config -s realm=${api_realm} -s enabled
 
 curl -s -H "Authorization: Bearer $bearer_token" -X POST "${iam_server}/auth/admin/realms/${api_realm}/client-scopes" -d '{ "name": "default",  "protocol": "openid-connect"}' -H 'Content-Type: application/json'
 
-cat apistudio-key-manager.bhn.json.template | sed "s/KC_KM_CLIENT_ID/${kc_km_client_id}/g" | sed "s/APISTUDIO_URL/${api_admin_server_host}/g" > apistudio-key-manager.bhn.json
+cat apistudio-key-manager-client.json.template | sed "s/KC_KM_CLIENT_ID/${kc_km_client_id}/g" | sed "s/APISTUDIO_URL/${api_admin_server_host}/g" > apistudio-key-manager.bhn.json
 kcadm.sh create clients --config $session_config -r ${api_realm} -f - < apistudio-key-manager.bhn.json
 
 # add service client role
