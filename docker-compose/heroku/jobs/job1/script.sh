@@ -38,6 +38,8 @@ kcadm.sh create clients --config $session_config -r ${api_realm} -f - < apistudi
 kcadm.sh add-roles --config $session_config -r ${api_realm}  --uusername service-account-${kc_km_client_id} \
  --cclientid realm-management --rolename create-client --rolename manage-clients \
  --rolename query-clients --rolename view-clients
+
+# this is just the keycloak guid - not the client id ###
 kc_id=$(kcadm.sh get clients --config $session_config -r ${api_realm} | jq ".[] | select ( .clientId == \"${kc_km_client_id}\" ) | .id" -r)
 kc_km_client_secret=$(kcadm.sh get clients/${kc_id}/client-secret --config $session_config -r ${api_realm} | jq '.value' -r)
 
@@ -50,13 +52,12 @@ TOKEN_PAYLOAD=$(curl -H "Authorization: Basic $AUTH" \
 TOKEN=$(echo $TOKEN_PAYLOAD | jq .access_token --raw-output)
 echo $TOKEN
 
-# this is just the keycloak guid - not the client id ###
-
-
 cat kc-km.json.template | sed "s/KC_KM_CLIENT_SECRET/${kc_km_client_secret}/g" \
 	| sed "s/KC_KM_CLIENT_ID/${kc_km_client_id}/g" \
 	| sed "s/APISTUDIO_URL/${iam_host}/g"  | sed "s/API_REALM/${api_realm}/g" > kc-km.json
-curl -s  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d @kc-km.json -X POST ${api_admin_server}/api/am/admin/v3/key-managers
+
+curl -s  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+	-d @kc-km.json -X POST ${api_admin_server_url}/api/am/admin/v3/key-managers
 
 
 curl -s  -H "Authorization: Bearer $TOKEN" ${api_admin_server_url}/api/am/admin/v3/key-managers | jq .
