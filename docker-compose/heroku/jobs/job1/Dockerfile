@@ -5,7 +5,8 @@ ENV KEYCLOAK_VERSION 16.1.1
 ARG KEYCLOAK_DIST=keycloak-$KEYCLOAK_VERSION.tar.gz
 ADD --chown=wso2carbon:wso2 $KEYCLOAK_DIST /opt/
 ADD --chown=wso2carbon:wso2 ./script.sh /opt/scripts/script.sh
-ADD --chown=wso2carbon:wso2 ./*.json* /opt/scripts/
+ADD --chown=wso2carbon:wso2 ./*.json /opt/scripts/
+ADD --chown=wso2carbon:wso2 ./*.template /opt/scripts/
 
 RUN  chmod -R g+rwX /opt/scripts/ && chown -R wso2carbon:wso2 /opt/scripts 
 USER root

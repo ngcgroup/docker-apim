@@ -3,18 +3,18 @@
   "displayName": "BHN IAM KM",
   "type": "KeyCloak",
   "description": "This is the BHN IAM manager for Developers",
-  "wellKnownEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/.well-known/openid-configuration",
-  "introspectionEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/token/introspect",
-  "clientRegistrationEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/clients-registrations/openid-connect",
-  "tokenEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/token",
-  "revokeEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/revoke",
-  "userInfoEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/userinfo",
-  "authorizeEndpoint": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/auth",
+  "wellKnownEndpoint": "https://APISTUDIO_URL/auth/realms/API_REALM/.well-known/openid-configuration",
+  "introspectionEndpoint": "https://APISTUDIO_URL/auth/realms/API_REALM/protocol/openid-connect/token/introspect",
+  "clientRegistrationEndpoint": "https://APISTUDIO_URL/auth/realms/API_REALM/clients-registrations/openid-connect",
+  "tokenEndpoint": "https://APISTUDIO_URL/auth/realms/API_REALM/protocol/openid-connect/token",
+  "revokeEndpoint": "https://APISTUDIO_URL/auth/realms/API_REALM/protocol/openid-connect/revoke",
+  "userInfoEndpoint": "https://APISTUDIO_URL/auth/realms/API_REALM/protocol/openid-connect/userinfo",
+  "authorizeEndpoint": "https://APISTUDIO_URL/auth/realms/API_REALM/protocol/openid-connect/auth",
   "certificates": {
     "type": "JWKS",
-    "value": "https://APISTUDIO_URL/auth/realms/apistudio2/protocol/openid-connect/certs"
+    "value": "https://APISTUDIO_URL/auth/realms/API_REALM/protocol/openid-connect/certs"
   },
-  "issuer": "https://APISTUDIO_URL/auth/realms/apistudio2",
+  "issuer": "https://APISTUDIO_URL/auth/realms/API_REALM",
   "scopeManagementEndpoint": "",
   "availableGrantTypes": [
         "authorization_code", "implicit", "refresh_token","password",
