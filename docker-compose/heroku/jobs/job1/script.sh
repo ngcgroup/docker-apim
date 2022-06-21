@@ -61,6 +61,8 @@ curl -s  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
 
 
 curl -s  -H "Authorization: Bearer $TOKEN" ${api_admin_server_url}/api/am/admin/v3/key-managers | jq .
+### validation ###
+./validate-km-setup.sh
 
 ## KEY MANAGER SETUP COMPLETE ###
 
