@@ -57,3 +57,5 @@ $ kubectl logs -f $(kubectl get po -n api | grep kubernetes-job-example | awk '{
 2. https://operatorhub.io/operator/keycloak-operator
 3. https://www.keycloak.org/docs/latest/server_installation/
 4. https://apim.docs.wso2.com/en/latest/administer/key-managers/configure-keycloak-connector/
+5. https://www.chakray.com/how-use-keycloak-as-wso2-api-manager-identity-provider/
+

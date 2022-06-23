@@ -1,0 +1,91 @@
+            <xsd:localAndOutBoundAuthenticationConfig >
+               <xsd:alwaysSendBackAuthenticatedListOfIdPs>false</xsd:alwaysSendBackAuthenticatedListOfIdPs>
+               <xsd:authenticationScriptConfig />
+               <xsd:authenticationStepForAttributes />
+               <xsd:authenticationStepForSubject />
+               <xsd:authenticationSteps >
+                  <xsd:attributeStep>false</xsd:attributeStep>
+                  <xsd:federatedIdentityProviders >
+                     <xsd:alias />
+                     <xsd:certificate />
+                     <xsd:claimConfig />
+                     <xsd:defaultAuthenticatorConfig >
+                        <xsd:displayName>openidconnect</xsd:displayName>
+                        <xsd:enabled>false</xsd:enabled>
+                        <xsd:name>OpenIDConnectAuthenticator</xsd:name>
+                        <xsd:valid>true</xsd:valid>
+                     </xsd:defaultAuthenticatorConfig>
+                     <xsd:defaultProvisioningConnectorConfig />
+                     <xsd:displayName />
+                     <xsd:enable>false</xsd:enable>
+                     <xsd:federatedAuthenticatorConfigs >
+                        <xsd:displayName>openidconnect</xsd:displayName>
+                        <xsd:enabled>false</xsd:enabled>
+                        <xsd:name>OpenIDConnectAuthenticator</xsd:name>
+                        <xsd:valid>true</xsd:valid>
+                     </xsd:federatedAuthenticatorConfigs>
+                     <xsd:federationHub>false</xsd:federationHub>
+                     <xsd:homeRealmId />
+                     <xsd:id />
+                     <xsd:identityProviderDescription />
+                     <xsd:identityProviderName>IDPNAME</xsd:identityProviderName>
+                     <xsd:justInTimeProvisioningConfig />
+                     <xsd:permissionAndRoleConfig />
+                     <xsd:primary>false</xsd:primary>
+                     <xsd:provisioningRole />
+                  </xsd:federatedIdentityProviders>
+                  <xsd:stepOrder>1</xsd:stepOrder>
+                  <xsd:subjectStep>false</xsd:subjectStep>
+               </xsd:authenticationSteps>
+               <xsd:authenticationType>federated</xsd:authenticationType>
+               <xsd:enableAuthorization>false</xsd:enableAuthorization>
+               <xsd:skipConsent>true</xsd:skipConsent>
+               <xsd:skipLogoutConsent>true</xsd:skipLogoutConsent>
+               <xsd:subjectClaimUri>preferred_username</<xsd:subjectClaimUri>
+               <xsd:useTenantDomainInLocalSubjectIdentifier>false</xsd:useTenantDomainInLocalSubjectIdentifier>
+               <xsd:useUserstoreDomainInLocalSubjectIdentifier>false</xsd:useUserstoreDomainInLocalSubjectIdentifier>
+               <xsd:useUserstoreDomainInRoles>true</xsd:useUserstoreDomainInRoles>
+            </xsd:localAndOutBoundAuthenticationConfig>
+
+            <xsd:claimConfig>
+               <xsd:alwaysSendMappedLocalSubjectId>false</xsd:alwaysSendMappedLocalSubjectId>
+               <xsd:idpClaims>
+                  <xsd:claimUri>preferred_username</xsd:claimUri>
+               </xsd:idpClaims>
+               <xsd:idpClaims>
+                  <xsd:claimUri>groups</xsd:claimUri>
+               </xsd:idpClaims>
+               <xsd:claimMappings>
+                  <xsd:remoteClaim>
+                     <xsd:claimUri>preferred_username</xsd:claimUri>
+                  </xsd:remoteClaim>
+                  <xsd:localClaim>
+                     <xsd:claimUri>http://wso2.org/claims/displayName</xsd:claimUri>
+                  </xsd:localClaim>
+               </xsd:claimMappings>
+               <xsd:claimMappings>
+                  <xsd:remoteClaim>
+                     <xsd:claimUri>groups</xsd:claimUri>
+                  </xsd:remoteClaim>
+                  <xsd:localClaim>
+                     <xsd:claimUri>http://wso2.org/claims/groups</xsd:claimUri>
+                  </xsd:localClaim>
+               </xsd:claimMappings>
+               <xsd:localClaimDialect>false</xsd:localClaimDialect>
+               <xsd:roleClaimURI>groups</xsd:roleClaimURI>
+               <xsd:userClaimURI>preferred_username</xsd:userClaimURI>
+            </xsd:claimConfig>
+            <xsd:permissionAndRoleConfig xmlns="http://model.common.application.identity.carbon.wso2.org/xsd">
+               <xsd:idpRoles>IDPRoles</xsd:idpRoles>
+               <xsd:roleMappings>
+                  <xsd:localRole>
+                     <xsd:localRoleName>Internal/subscriber</xsd:localRoleName>
+                  </xsd:localRole>
+                  <xsd:remoteRole>subscriber</xsd:remoteRole>
+               </xsd:roleMappings>
+            </xsd:permissionAndRoleConfig>
+         </xsd:serviceProvider>
+     </xsd:updateApplication>
+
+   </soapenv:Body>
+</soapenv:Envelope>

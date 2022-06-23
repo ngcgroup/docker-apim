@@ -1,0 +1,15 @@
+{
+    "name": "groups",
+    "protocol": "openid-connect",
+    "protocolMapper": "oidc-usermodel-realm-role-mapper",
+    "consentRequired": false,
+    "config": {
+      "multivalued": "true",
+      "user.attribute": "foo",
+      "id.token.claim": "true",
+      "access.token.claim": "true",
+      "claim.name": "groups",
+      "jsonType.label": "String"
+    }
+}
+

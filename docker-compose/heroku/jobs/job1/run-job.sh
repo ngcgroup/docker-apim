@@ -21,4 +21,4 @@ set -e
 kubectl create configmap env-bindings-cm-job1 --from-env-file=env-file -n $namespace
 kubectl create  -f job.yaml $dry_run
 sleep 10
-kubectl logs -f $(kubectl get po -n api | grep kubernetes-job-example | awk '{print $1}') -n api
+kubectl logs -f $(kubectl get po -n api | grep kubernetes-job-example | grep 'Running' | awk '{print $1}') -n api

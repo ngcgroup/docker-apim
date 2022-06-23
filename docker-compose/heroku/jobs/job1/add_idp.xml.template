@@ -1,0 +1,148 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mgt="http://mgt.idp.carbon.wso2.org" xmlns:xsd="http://model.common.application.identity.carbon.wso2.org/xsd">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mgt:addIdP>
+         <!--Optional:-->
+         <mgt:identityProvider>
+            <!--Optional:-->
+            <xsd:alias>IDPNAME</xsd:alias>
+            <xsd:claimConfig>
+               <xsd:idpClaims>
+                  <xsd:claimUri>preferred_username</xsd:claimUri>
+               </xsd:idpClaims>
+               <xsd:idpClaims>
+                  <xsd:claimUri>groups</xsd:claimUri>
+               </xsd:idpClaims>
+               <xsd:claimMappings>
+                  <xsd:remoteClaim>
+                     <xsd:claimUri>preferred_username</xsd:claimUri>
+                  </xsd:remoteClaim>                  
+                  <xsd:localClaim>
+                     <xsd:claimUri>http://wso2.org/claims/displayName</xsd:claimUri>
+                  </xsd:localClaim>
+               </xsd:claimMappings>
+               <xsd:claimMappings>
+                  <xsd:remoteClaim>
+                     <xsd:claimUri>groups</xsd:claimUri>
+                  </xsd:remoteClaim>                  
+                  <xsd:localClaim>
+                     <xsd:claimUri>http://wso2.org/claims/groups</xsd:claimUri>
+                  </xsd:localClaim>
+               </xsd:claimMappings>
+               <xsd:localClaimDialect>false</xsd:localClaimDialect>
+               <xsd:roleClaimURI>groups</xsd:roleClaimURI>
+               <xsd:userClaimURI>preferred_username</xsd:userClaimURI>
+            </xsd:claimConfig>
+            <xsd:permissionAndRoleConfig xmlns="http://model.common.application.identity.carbon.wso2.org/xsd">
+               <xsd:idpRoles>IDPRoles</xsd:idpRoles>
+               <xsd:roleMappings>
+                  <xsd:localRole>
+                     <xsd:localRoleName>Internal/subscriber</xsd:localRoleName>
+                  </xsd:localRole>
+                  <xsd:remoteRole>subscriber</xsd:remoteRole>
+               </xsd:roleMappings>
+            </xsd:permissionAndRoleConfig>
+            <!--Optional:-->
+            <xsd:displayName>IDPNAME</xsd:displayName>
+            <!--Optional:-->
+            <xsd:enable>true</xsd:enable>
+            <!--Zero or more repetitions:-->
+            
+            <xsd:federatedAuthenticatorConfigs>
+               <!--Optional:-->
+               <displayName>openidconnect</displayName>
+               <enabled>true</enabled>
+               <name>OpenIDConnectAuthenticator</name>
+               <!--Zero or more repetitions:-->
+               <xsd:properties>
+                  <!--Optional:-->
+                  <xsd:value>IDP_CLIENT_ID</xsd:value>
+                  <xsd:confidential>false</xsd:confidential>
+                  <xsd:name>ClientId</xsd:name>
+               </xsd:properties>
+               <xsd:properties>
+                  <!--Optional:-->
+                  <xsd:value>IDP_CLIENT_SECRET</xsd:value>
+                  <xsd:confidential>true</xsd:confidential>
+                  <xsd:name>ClientSecret</xsd:name>
+               </xsd:properties>
+               <!-- https://docs.wso2.com/display/IS540/Using+the+Identity+Provider+API -->
+               <xsd:properties>
+                  <xsd:name>OAuth2AuthzEPUrl</xsd:name>
+                  <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/protocol/openid-connect/auth</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>OAuth2TokenEPUrl</xsd:name>
+                  <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/protocol/openid-connect/token</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>callbackUrl</xsd:name>
+                  <xsd:value>https://API_STUDIO_HOST/commonauth</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>UserInfoUrl</xsd:name>
+                  <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/protocol/openid-connect/userinfo</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>OIDCDiscoveryEPUrl</xsd:name>
+                  <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/.well-known/openid-configuration</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>OAuth2JWKSPage</xsd:name>
+                  <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/protocol/openid-connect/certs</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>OIDCLogoutEPUrl</xsd:name>
+                  <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/protocol/openid-connect/logout</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>OIDCCheckSessionEPUrl</xsd:name>
+                  <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/protocol/openid-connect/login-status-iframe.html</xsd:value>
+               </xsd:properties>
+               <xsd:properties>
+                  <xsd:name>IsUserIdInClaims</xsd:name>
+                  <xsd:value>false</xsd:value>
+               </xsd:properties>    
+
+                                                                                
+            </xsd:federatedAuthenticatorConfigs>
+            <!--Optional:-->
+            <xsd:federationHub>false</xsd:federationHub>
+            <!--Optional:-->
+            <xsd:homeRealmId>API_REALM</xsd:homeRealmId>
+            <!--Optional:-->
+            <!--Optional:-->
+            <!--Optional:-->
+            <xsd:identityProviderName>IDPNAME</xsd:identityProviderName>
+            <!--Zero or more repetitions:-->
+            <xsd:idpProperties>
+               <xsd:name>idpIssuerName</xsd:name>
+               <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM</xsd:value>
+            </xsd:idpProperties>
+            <xsd:idpProperties>
+               <xsd:displayName>Identity Provider's JWKS Endpoint</xsd:displayName>
+               <xsd:name>jwksUri</xsd:name>
+               <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM/protocol/openid-connect/certs</xsd:value>
+            </xsd:idpProperties>
+            <!-- <xsd:idpProperties>
+               <xsd:name>PASSWORD_PROVISIONING_ENABLED</xsd:name>
+               <xsd:value>false</xsd:value>
+            </xsd:idpProperties>
+            <xsd:idpProperties>
+               <xsd:name>PROMPT_CONSENT_ENABLED</xsd:name>
+               <xsd:value>false</xsd:value>
+            </xsd:idpProperties>-->
+
+            <!--Optional:-->
+            <xsd:justInTimeProvisioningConfig>
+               <xsd:provisioningEnabled>true</xsd:provisioningEnabled>
+               <xsd:provisioningUserStore>PRIMARY</xsd:provisioningUserStore>
+               <xsd:promptConsent>false</xsd:promptConsent>
+            </xsd:justInTimeProvisioningConfig>
+            
+            <!--Optional:-->
+            <xsd:primary>false</xsd:primary>
+         </mgt:identityProvider>
+      </mgt:addIdP>
+   </soapenv:Body>
+</soapenv:Envelope>
