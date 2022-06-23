@@ -41,7 +41,7 @@
                <xsd:enableAuthorization>false</xsd:enableAuthorization>
                <xsd:skipConsent>true</xsd:skipConsent>
                <xsd:skipLogoutConsent>true</xsd:skipLogoutConsent>
-               <xsd:subjectClaimUri>preferred_username</<xsd:subjectClaimUri>
+               <xsd:subjectClaimUri>preferred_username</xsd:subjectClaimUri>
                <xsd:useTenantDomainInLocalSubjectIdentifier>false</xsd:useTenantDomainInLocalSubjectIdentifier>
                <xsd:useUserstoreDomainInLocalSubjectIdentifier>false</xsd:useUserstoreDomainInLocalSubjectIdentifier>
                <xsd:useUserstoreDomainInRoles>true</xsd:useUserstoreDomainInRoles>
