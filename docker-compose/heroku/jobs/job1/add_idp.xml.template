@@ -41,6 +41,12 @@
                   </xsd:localRole>
                   <xsd:remoteRole>subscriber</xsd:remoteRole>
                </xsd:roleMappings>
+               <xsd:roleMappings>
+                  <xsd:localRole>
+                     <xsd:localRoleName>Internal/publisher</xsd:localRoleName>
+                  </xsd:localRole>
+                  <xsd:remoteRole>publisher</xsd:remoteRole>
+               </xsd:roleMappings>
             </xsd:permissionAndRoleConfig>
             <!--Optional:-->
             <xsd:displayName>IDPNAME</xsd:displayName>

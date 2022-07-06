@@ -47,7 +47,7 @@ const DefaultConfigurations = {
             border: 'none', // It can be something like 'solid 1px #cccccc' for fixed layouts
         },
         appBar: {
-            logo: '/site/public/images/logo.svg', // You can set the url to an external image also ( ex: https://dummyimage.com/208x19/66aad1/ffffff&text=testlogo)
+            logo: '/site/public/images/bhn.svg', // You can set the url to an external image also ( ex: https://dummyimage.com/208x19/66aad1/ffffff&text=testlogo)
             logoHeight: 34,
             logoWidth: 'auto',
             background: '#0fa2db',

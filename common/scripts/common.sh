@@ -41,6 +41,11 @@ function parse_args() {
         skip_download="true"
         shift # past argument
         #shift # past value
+        ;; 
+      -t|--tenant)
+        tenant=$2
+        shift # past argument
+        shift # past value
         ;;                
       -*|--*)
         echo "Unknown option $1"

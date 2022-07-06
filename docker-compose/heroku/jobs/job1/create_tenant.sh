@@ -1,6 +1,6 @@
 #! /bin/bash
 set -x
-LOOP_COUNT=$1
+tenant=$1
 echo "This Job will echo message $1 times"
 
 
@@ -27,7 +27,52 @@ bearer_token=$(curl -s -X POST "${iam_server}/realms/master/protocol/openid-conn
      --data-urlencode 'client_id=admin-cli' \
       | jq -r '.access_token')
 
-kcadm.sh config credentials --server ${iam_server} --realm master --user ${KEYCLOAK_USER} --password ${KEYCLOAK_PASSWORD} --config /opt/scripts/kcadm.config      
+
+kcadm.sh config credentials --server ${iam_server} --realm master --user ${KEYCLOAK_USER} --password ${KEYCLOAK_PASSWORD} --config /opt/scripts/kcadm.config   
+
+cat kc_tenant_client.json.template | sed "s/TENANT_PREFIX/${tenant}/g" | sed "s/APISTUDIO_URL/${api_admin_server_host}/g"  > kc_tenant_client.json
+kcadm.sh create clients --config $session_config -r ${api_realm} -f - < kc_tenant_client.json
+
+kc_tenant_client_id=${tenant}_publish_client
+kc_client_id=$(kcadm.sh get clients --config $session_config -r ${api_realm} | jq ".[] | select ( .clientId == \"${kc_tenant_client_id}\" ) | .id" -r)
+kc_tenant_client_secret=$(kcadm.sh get clients/${kc_client_id}/client-secret --config $session_config -r ${api_realm} | jq '.value' -r)
+
+## Adding WSO2 tenant setup
+
+XML=$(cat auth.xml.template | sed "s/ADMIN_USER/${ADMIN_USER}/g" | sed "s/ADMIN_PASSWORD/${ADMIN_PASSWORD}/g" | sed "s/SERVER/${api_admin_server_host}/g")
+COOKIE=$(curl -k -s -o /dev/null -D -  -H 'SOAPAction: urn:login' -H 'Content-Type: text/xml' -d "$XML" ${api_admin_server_url}/services/AuthenticationAdmin | grep set-cookie | cut -d':' -f2 | cut -d ';' -f1 | sed 's/^ //g')
+
+tenant_firstname=${tenant}_admin
+tenant_lastname=${tenant}_admin
+tenant_email=${tenant}@bhn.technology
+tenant_domain=${tenant}.apistudio.bhn.technology
+XML=$(cat add_tenant.xml.template | sed "s/USERNAME/${ADMIN_USER}/g" | sed "s/PASSWORD/${ADMIN_PASSWORD}/g" |sed "s/EMAIL/${tenant}@bhnetwork.com/g" | sed "s/DOMAIN/${tenant_domain}/g" | sed "s/FIRSTNAME/${tenant_firstname}/g" | sed "s/LASTNAME/${tenant_lastname}/g" | sed "s/EMAIL/${tenant_email}/g")
+echo $XML
+curl -kv -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap+xml;charset=UTF-8;action="urn:addTenant"' -d "$XML" -X POST ${api_admin_server_url}/services/TenantMgtAdminService.TenantMgtAdminServiceHttpsSoap12Endpoint
+
+## Creating IDP in WSo2 tenant
+
+IDPNAME="BHNIAM"
+SP_NAME="apim_devportal"
+tenant_admin_user=${ADMIN_USER}@${tenant_domain}
+tenant_admin_password=${ADMIN_PASSWORD}
+XML=$(cat auth.xml.template | sed "s/ADMIN_USER/${tenant_admin_user}/g" | sed "s/ADMIN_PASSWORD/${tenant_admin_password}/g" | sed "s/SERVER/${api_admin_server_host}/g")
+COOKIE=$(curl -k -s -o /dev/null -D -  -H 'SOAPAction: urn:login' -H 'Content-Type: text/xml' -d "$XML" ${api_admin_server_url}/services/AuthenticationAdmin | grep set-cookie | cut -d':' -f2 | cut -d ';' -f1 | sed 's/^ //g')
+
+cat add_idp.xml.template | sed "s/IDPNAME/${IDPNAME}/g"  \
+   | sed "s/API_REALM/${api_realm}/g" |sed "s/IAM_SERVER_HOST/${iam_host}/g" \
+   | sed "s/IDP_CLIENT_ID/${kc_tenant_client_id}/g" | sed "s/IDP_CLIENT_SECRET/${kc_tenant_client_secret}/g" \
+   | sed "s/API_STUDIO_HOST/${api_admin_server_host}/g" > add_idp.xml
+
+curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap;charset=UTF-8;action="urn:addIdP"' \
+  -d @add_idp.xml -X POST ${api_admin_server_url}/services/IdentityProviderMgtService.IdentityProviderMgtServiceHttpsSoap11Endpoint
+
+
+exit 0
+while [ true ]; do
+	sleep 60;
+done
+exit 0
 #kcadm.sh get realms --config $session_config  --server ${iam_server}
 kcadm.sh create realms --config $session_config -s realm=${api_realm} -s enabled=true -o
 
@@ -100,28 +145,6 @@ curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: a
 
 
 
-cat get_application.xml.template | sed "s/SP_NAME/${SP_NAME}/g" > get_application_request.xml
-XML=$(curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap;charset=UTF-8;action="urn:getApplication"' \
-  -d @get_application_request.xml -X POST ${api_admin_server_url}/services/IdentityApplicationManagementService.IdentityApplicationManagementServiceHttpsSoap11Endpoint)
-
-
-
-sp_details=$(curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" \
- -H 'Content-Type: application/soap;charset=UTF-8;action="urn:getApplication"'  \
- -d @get_application_request.xml \
- -X POST ${api_admin_server_url}/services/IdentityApplicationManagementService.IdentityApplicationManagementServiceHttpsSoap11Endpoint \
- | xq . -x | sed 's/xmlns.*\=/ns_=/g'  | sed 's/ax[0-9]*\:/xsd\:/g' | sed 's/xsi:nil="true"//g' | sed 's|xsi:.*\">|>|g' \
- |xq '.["soapenv:Envelope"]|.["soapenv:Body"]|.["ns:getApplicationResponse"] | .["ns:return"] | del(.["@xsi:type"]) | del(.["@ns_"]) | del (.["xsd:localAndOutBoundAuthenticationConfig"])| del ( .["xsd:claimConfig"]) | del(.["xsd:permissionAndRoleConfig"]) | . ' -x)
-
-HEADER=$(cat update_application_header.xml.template); FOOTER=$(cat update_application_footer.xml.template| sed "s/IDPNAME/${IDPNAME}/g" );
-echo $HEADER $sp_details $FOOTER | xq . -x > update_application_request.xml
-
-curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap;charset=UTF-8;action="urn:updateApplication"' \
-  -d @update_application_request.xml -X POST ${api_admin_server_url}/services/IdentityApplicationManagementService.IdentityApplicationManagementServiceHttpsSoap11Endpoint
-
-
-## publisher IAM update
-SP_NAME="apim_publisher"
 cat get_application.xml.template | sed "s/SP_NAME/${SP_NAME}/g" > get_application_request.xml
 XML=$(curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap;charset=UTF-8;action="urn:getApplication"' \
   -d @get_application_request.xml -X POST ${api_admin_server_url}/services/IdentityApplicationManagementService.IdentityApplicationManagementServiceHttpsSoap11Endpoint)
