@@ -1,0 +1,9 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://services.mgt.tenant.carbon.wso2.org">
+   <soap:Header/>
+   <soap:Body>
+      <ser:deleteTenant>
+         <!--Optional:-->
+         <ser:tenantDomain>DOMAIN</ser:tenantDomain>
+      </ser:deleteTenant>
+   </soap:Body>
+</soap:Envelope>
