@@ -121,10 +121,12 @@
             <!--Optional:-->
             <xsd:identityProviderName>IDPNAME</xsd:identityProviderName>
             <!--Zero or more repetitions:-->
+            <!-- 
             <xsd:idpProperties>
                <xsd:name>idpIssuerName</xsd:name>
                <xsd:value>https://IAM_SERVER_HOST/auth/realms/API_REALM</xsd:value>
             </xsd:idpProperties>
+            -->
             <xsd:idpProperties>
                <xsd:displayName>Identity Provider's JWKS Endpoint</xsd:displayName>
                <xsd:name>jwksUri</xsd:name>
