@@ -6,6 +6,8 @@ echo "This Job will echo message $1 times"
 
 export PATH=/opt/keycloak/bin:$PATH
 iam_host=iam.bhn.technology
+devportal_host=developer.internal.bhn.technology
+publisher_host=apistudio.bhn.technology
 iam_server_without_auth=https://${iam_host}
 iam_server=${iam_server_without_auth}/auth
 api_admin_server_host=apistudio.bhn.technology
@@ -15,7 +17,8 @@ api_realm=apistudio
 
 ## KEY MANAGER SETUP START ###
 kc_km_client_id=apistudio-keymanager-client
-kc_idp_client_id=apistudio-id-client
+kc_idp_devportal_client_id=apistudio-idp-devportal-client
+kc_idp_publisher_client_id=apistudio-idp-publisher-client
 cd /opt/scripts
 
 
@@ -74,11 +77,11 @@ XML=$(cat auth.xml.template | sed "s/ADMIN_USER/${ADMIN_USER}/g" | sed "s/ADMIN_
 COOKIE=$(curl -k -s -o /dev/null -D -  -H 'SOAPAction: urn:login' -H 'Content-Type: text/xml' -d "$XML" ${api_admin_server_url}/services/AuthenticationAdmin | grep set-cookie | cut -d':' -f2 | cut -d ';' -f1 | sed 's/^ //g')
 
 
-cat apistudio-keymanager-client.json.template | sed "s/KC_KM_CLIENT_ID/${kc_idp_client_id}/g" | sed "s/APISTUDIO_URL/${api_admin_server_host}/g" > apistudio-idp.bhn.json
+cat apistudio-keymanager-client.json.template | sed "s/KC_KM_CLIENT_ID/${kc_idp_devportal_client_id}/g" | sed "s/APISTUDIO_URL/${devportal_host}/g" > apistudio-idp.bhn.json
 kcadm.sh create clients --config $session_config -r ${api_realm} -f - < apistudio-idp.bhn.json
 
-kc_idp_id=$(kcadm.sh get clients --config $session_config -r ${api_realm} | jq ".[] | select ( .clientId == \"${kc_idp_client_id}\" ) | .id" -r)
-kc_idp_client_secret=$(kcadm.sh get clients/${kc_idp_id}/client-secret --config $session_config -r ${api_realm} | jq '.value' -r)
+kc_idp_id=$(kcadm.sh get clients --config $session_config -r ${api_realm} | jq ".[] | select ( .clientId == \"${kc_idp_devportal_client_id}\" ) | .id" -r)
+kc_idp_devportal_client_secret=$(kcadm.sh get clients/${kc_idp_id}/client-secret --config $session_config -r ${api_realm} | jq '.value' -r)
 
 
 profile_id=$(curl -s -H "Authorization: Bearer $bearer_token" "${iam_server}/admin/realms/${api_realm}/client-scopes" | jq '.[] | select (.name=="profile") | .id' -r)
@@ -87,13 +90,13 @@ curl -s -H "Authorization: Bearer $bearer_token" -H 'Content-Type: application/j
   -d @protocol-mapper-group.template.json
 
 
-IDPNAME="BHNIAM"
+IDPNAME="BHNIAM_DEVPORTAL"
 SP_NAME="apim_devportal"
 
 cat add_idp.xml.template | sed "s/IDPNAME/${IDPNAME}/g"  \
    | sed "s/API_REALM/${api_realm}/g" |sed "s/IAM_SERVER_HOST/${iam_host}/g" \
-   | sed "s/IDP_CLIENT_ID/${kc_idp_client_id}/g" | sed "s/IDP_CLIENT_SECRET/${kc_idp_client_secret}/g" \
-   | sed "s/API_STUDIO_HOST/${api_admin_server_host}/g" > add_idp.xml
+   | sed "s/IDP_CLIENT_ID/${kc_idp_devportal_client_id}/g" | sed "s/IDP_CLIENT_SECRET/${kc_idp_devportal_client_secret}/g" \
+   | sed "s/API_STUDIO_HOST/${devportal_host}/g" > add_idp.xml
 
 curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap;charset=UTF-8;action="urn:addIdP"' \
   -d @add_idp.xml -X POST ${api_admin_server_url}/services/IdentityProviderMgtService.IdentityProviderMgtServiceHttpsSoap11Endpoint
@@ -119,6 +122,23 @@ echo $HEADER $sp_details $FOOTER | xq . -x > update_application_request.xml
 curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap;charset=UTF-8;action="urn:updateApplication"' \
   -d @update_application_request.xml -X POST ${api_admin_server_url}/services/IdentityApplicationManagementService.IdentityApplicationManagementServiceHttpsSoap11Endpoint
 
+## Create custom service
+IDPNAME="BHNIAM_PUBLISHER"
+
+cat apistudio-keymanager-client.json.template | sed "s/KC_KM_CLIENT_ID/${kc_idp_publisher_client_id}/g" | sed "s/APISTUDIO_URL/${api_admin_server_host}/g" > apistudio-idp.bhn.json
+kcadm.sh create clients --config $session_config -r ${api_realm} -f - < apistudio-idp.bhn.json
+
+kc_idp_id=$(kcadm.sh get clients --config $session_config -r ${api_realm} | jq ".[] | select ( .clientId == \"${kc_idp_publisher_client_id}\" ) | .id" -r)
+kc_idp_publisher_client_secret=$(kcadm.sh get clients/${kc_idp_id}/client-secret --config $session_config -r ${api_realm} | jq '.value' -r)
+
+
+cat add_idp.xml.template | sed "s/IDPNAME/${IDPNAME}/g"  \
+   | sed "s/API_REALM/${api_realm}/g" |sed "s/IAM_SERVER_HOST/${iam_host}/g" \
+   | sed "s/IDP_CLIENT_ID/${kc_idp_publisher_client_id}/g" | sed "s/IDP_CLIENT_SECRET/${kc_idp_publisher_client_secret}/g" \
+   | sed "s/API_STUDIO_HOST/${api_admin_server_host}/g" > add_idp.xml
+
+curl -s -H 'Authorization: Basic $AUTH' -H "Cookie: $COOKIE" -H 'Content-Type: application/soap;charset=UTF-8;action="urn:addIdP"' \
+  -d @add_idp.xml -X POST ${api_admin_server_url}/services/IdentityProviderMgtService.IdentityProviderMgtServiceHttpsSoap11Endpoint
 
 ## publisher IAM update
 SP_NAME="apim_publisher"

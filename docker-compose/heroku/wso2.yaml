@@ -50,6 +50,7 @@ spec:
               value: "true"
           image: 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-apim:latest
           name: apistudio
+          imagePullPolicy: Always
           ports:
             - containerPort: 9443
             - containerPort: 8280
@@ -92,8 +93,19 @@ spec:
     hosts:
     - apigw.bhn.technology
     - apistudio.bhn.technology
+    - developer.internal.bhn.technology
   rules:
     - host: apistudio.bhn.technology
+      http:
+        paths:        
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: apistudio
+              port:
+                number: 9443
+    - host: developer.internal.bhn.technology
       http:
         paths:        
         - path: /

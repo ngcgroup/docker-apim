@@ -14,6 +14,12 @@ const Settings = {
         origin: {
             host: 'localhost',
         },
+        reverseProxy: {
+            auto: true,
+            forwardedHeader: 'x-forwarded-for',
+            loopbackHost: 'localhost',
+            defaultHTTPSPort: 9443,
+        },
         subscriptionLimit: 1000,
         subscribeApplicationLimit: 5000,
         isPassive: true,
