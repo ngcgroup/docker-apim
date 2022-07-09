@@ -8,7 +8,7 @@ const Settings = {
         proxy_context_path: '/apim',
         */
         customUrl: {
-            enabled: true,
+            enabled: false,
             forwardedHeader: 'X-Forwarded-Host',
         },
         origin: {
