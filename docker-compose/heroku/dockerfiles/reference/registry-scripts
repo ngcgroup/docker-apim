@@ -1,0 +1,30 @@
+curl -v -k -X PUT -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Content-Type: application/atomcoll+xml" -d "https://apistudio.bhn.technology/resource/1.0.0/artifact/_system/governance/"
+
+https://apistudio.bhn.technology/carbon/resources/
+
+
+curl -v -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg" -H "Cookie: $COOKIE" -H "Content-Type: application/json" -H "Cache-Control: no-cache" "https://apistudio.bhn.technology/governance/types/"
+
+
+curl -v -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" "https://apigw.bhn.technology/resource/1.0.0/artifact/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology"
+
+
+curl -v -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" "https://apistudio.bhn.technology/resource/1.0.0/artifact/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology"
+
+curl -v -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" "https://apigw.bhn.technology/services/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology"
+
+
+curl -v -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" "https://apistudio.bhn.technology/registry/artifact/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology"
+
+
+curl -v -k -X PUT -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Content-Type: application/atomcoll+xml" -d "https://localhost:9443/resource/1.0.0/artifact/_system/governance/permission/applications/TestSP/TestCol"
+
+
+wget --no-check-certificate  --header "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" --header "Content-Type: application/atomcoll+xml" "https://0.0.0.0:9443/resource/1.0.0/artifact/_system/governance/"
+
+
+
+curl -v -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" https://apistudio.bhn.technology/registry/resource/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology
+
+
+curl -s -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" https://apistudio.bhn.technology/registry/resource/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology | jq .

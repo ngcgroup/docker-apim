@@ -1,0 +1,55 @@
+executeStep(1, 
+        {
+            authenticationOptions:[{idp:"BHNIAM1"}] ,
+            authenticatorParams: {
+                common : {"ClientId" : "test"},
+                federated: {
+                    "BHNIAM" : {
+                        "ClientId": "test"
+                    }
+                }
+            }
+        },
+        {
+            onSuccess: function(context) {
+                //Do something on success
+                var username = context.steps[1].subject.username;
+                Log.info('successful login ' + username);
+            }
+        }
+    );
+
+var onLoginRequest = function(context) {
+    Log.info('successful login request ' );
+
+    executeStep(1, 
+        {
+            authenticationOptions:[{idp:"BHNIAM"}]
+        },
+        {
+            onSuccess: function(context) {
+                //Do something on success
+                var username = context.steps[1].subject.username;
+                Log.info('successful login ' + username);
+            }
+        }
+    );
+}
+var onLoginRequest = function(context) {
+    Log.info('successful login request ' );
+    executeStep(1, 
+        {
+            authenticatorParams: {
+                    common : {"ClientId" : "test1"}
+            }
+        },
+        {
+            onSuccess: function (context) {
+                var username = context.steps[1].subject.username;
+                Log.info('successful login ' + username);
+            }
+        }
+    );
+    
+
+};

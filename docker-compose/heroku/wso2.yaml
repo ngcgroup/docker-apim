@@ -197,27 +197,5 @@ spec:
 
 
 ---
-#apiVersion: k8s.nginx.org/v1
-#kind: VirtualServer
-#metadata:
-#  namespace: api
-#  name: ingress-nginx-developer
-#  annotations:
-#    kubernetes.io/ingress.class: "nginx"
-#    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-#spec:
-#  host: developer.internal.bhn.technology
-#  tls:
-#    secret: tls-cert
-#  upstreams:
-#    - name: apistudio
-#      service: apistudio
-#      port: 9443
-#  routes:
-#  - path: /
-#    location-snippets: |
-#      proxy_redirect https://developer.internal.bhn.technology/devportal/ /;
-#    action:
-#     proxy:
-#        upstream: apistudio
-#        rewritePath: /devportal
+#regexp=(https://developer.internal.bhn.technology/devportal/services/auth/callback/login|https://developer.internal.bhn.technology/devportal/services/auth/callback/logout)
+#regexp=(https://developer.internal.bhn.technology/services/auth/callback/login|https://developer.internal.bhn.technology/services/auth/callback/logout)
