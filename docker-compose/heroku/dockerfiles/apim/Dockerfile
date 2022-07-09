@@ -37,6 +37,7 @@ ADD --chown=wso2carbon:wso2 ./conf/apim /home/wso2carbon/wso2-config-volume
 ADD ./apps/deployment/server/jaggeryapps/devportal/site/public/dist/bundle.tar.gz ${WSO2_DEVPORTAL_DIST}/
 #RUN tar -zxv -C ${WSO2_DEVPORTAL_DIST}/ -f /tmp/bundle.tar.gz && rm /tmp/bundle.tar.gz
 USER root
+RUN apk --no-cache add curl
 RUN if [ "$local" = "true" ]; then mv /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.local /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml && rm -f /home/wso2carbon/wso2-config-volume/repository/conf/deployment; fi
 USER wso2carbon
 #ADD client-truststore.jks ${WSO2_SERVER_HOME}/repository/resources/security/
@@ -46,5 +47,6 @@ ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/mysql/mysql-connector
 ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/mysql/mysql-connector-java/${MYSQL_CONNECTOR_VERSION}/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar ${WSO2_SERVER_HOME}/repository/components/lib/
 
 ADD --chown=wso2carbon:wso2  https://jdbc.postgresql.org/download/postgresql-${POSTGRE_CONNECTOR_VERSION}.jar ${WSO2_SERVER_HOME}/repository/components/dropins/
+
 
 ENTRYPOINT ["/home/wso2carbon/entrypoint.sh"]
