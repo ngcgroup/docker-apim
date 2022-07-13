@@ -26,5 +26,7 @@ wget --no-check-certificate  --header "Authorization: Basic YWRtaW46UGFzc3cwcmQt
 
 curl -v -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" https://apistudio.bhn.technology/registry/resource/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology
 
+api_admin_server_url=https://apistudio.bhn.technology server=apistudio.bhn.technology XML=$(cat auth.xml.template | sed "s/ADMIN_USER/${ADMIN_USER}/g" | sed "s/ADMIN_PASSWORD/${ADMIN_PASSWORD}/g" | sed "s/SERVER/${server}/g")
+COOKIE=$(curl -k -s -o /dev/null -D -  -H 'SOAPAction: urn:login' -H 'Content-Type: text/xml' -d "$XML" ${api_admin_server_url}/services/AuthenticationAdmin | grep set-cookie | cut -d':' -f2 | cut -d ';' -f1 | sed 's/^ //g')
 
-curl -s -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" https://apistudio.bhn.technology/registry/resource/_system/governance/customurl/api-cloud/internal.bhn.technology/urlMapping/internal.bhn.technology | jq .
+curl -s -k -H "Authorization: Basic YWRtaW46UGFzc3cwcmQtMTIzCg==" -H "Cookie: $COOKIE" -H "Content-Type: application/atomcoll+xml" -H "Cache-Control: no-cache" https://apistudio.bhn.technology/registry/resource/_system/governance/customurl/api-cloud/carbon.super/urlMapping/carbon.super | jq .
