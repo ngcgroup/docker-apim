@@ -58,4 +58,5 @@ $ kubectl logs -f $(kubectl get po -n api | grep kubernetes-job-example | awk '{
 3. https://www.keycloak.org/docs/latest/server_installation/
 4. https://apim.docs.wso2.com/en/latest/administer/key-managers/configure-keycloak-connector/
 5. https://www.chakray.com/how-use-keycloak-as-wso2-api-manager-identity-provider/
-
+6. https://github.com/wso2/product-is/blob/58914c08d563df3d8997dd15cc74c95641f02e68/modules/integration/tests-integration/tests-backend/src/test/java/org/wso2/identity/integration/test/utils/IdentityConstants.java
+7. https://github.com/wso2/carbon-identity-framework/blob/cf4937895f3eaf7c96b20ca379dc741dc62dfbce/components/idp-mgt/org.wso2.carbon.idp.mgt/src/main/java/org/wso2/carbon/idp/mgt/dao/IdPManagementDAO.java
