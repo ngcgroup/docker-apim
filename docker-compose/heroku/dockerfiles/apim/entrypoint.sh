@@ -58,6 +58,7 @@ if [ "$SHARED_DATABASE_URL" != "" ]; then
 
 fi
 
+
 set -e -x
 
 for envvar in $(env |grep "ENV_"); do 
@@ -68,6 +69,12 @@ for envvar in $(env |grep "ENV_"); do
     value=${my_array[1]}; 
     sed -i "s/$key/$value/g" /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.template;
 done
+
+if [ "$DEVPORTAL_HOST" != "" ]; then
+    cd /home/wso2carbon/wso2-config-volume/repository/components/plugins
+    jar uvf ${WSO2_SERVER_HOME}/repository/components/plugins/org.wso2.am.styles_4.1.0.jar META-INF/
+    cd -
+fi
 
 cp /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml.template /home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
 keytool -import -trustcacerts -alias keycloak -file /home/wso2carbon/wso2-config-volume/keycloak.crt -keystore ${WSO2_SERVER_HOME}/repository/resources/security/client-truststore.jks -storepass wso2carbon -noprompt

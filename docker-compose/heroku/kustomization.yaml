@@ -5,7 +5,7 @@ namespace: api
 #  overwrite: true
 #  name: iam
 commonLabels:
-  com.bhn.service: apistudio
+#  com.bhn.service: apistudio
 configMapGenerator:
   - name: env-bindings-cm
     envs:

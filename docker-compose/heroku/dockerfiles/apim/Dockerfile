@@ -34,7 +34,7 @@ ARG WSO2_APP_HOME=${WSO2_HOME}/repository/deployment/server/jaggeryapps
 ARG WSO2_DEVPORTAL_DIST=${WSO2_APP_HOME}/devportal/site/public/dist
 ARG local=false
 ADD --chown=wso2carbon:wso2 ./conf/apim /home/wso2carbon/wso2-config-volume
-ADD ./apps/deployment/server/jaggeryapps/devportal/site/public/dist/bundle.tar.gz ${WSO2_DEVPORTAL_DIST}/
+#ADD ./apps/deployment/server/jaggeryapps/devportal/site/public/dist/bundle.tar.gz ${WSO2_DEVPORTAL_DIST}/
 #RUN tar -zxv -C ${WSO2_DEVPORTAL_DIST}/ -f /tmp/bundle.tar.gz && rm /tmp/bundle.tar.gz
 USER root
 RUN apk --no-cache add curl

@@ -12,4 +12,4 @@ source_env_from_aws
 
 set -x -e
 kubectl apply -k .
-kubectl get secret keycloak-keystore --namespace=iam -o yaml | sed 's/namespace: iam/namespace: api/g' | kubectl apply -f -
+#kubectl get secret keycloak-keystore --namespace=iam -o yaml | sed 's/namespace: iam/namespace: api/g' | kubectl apply -f -

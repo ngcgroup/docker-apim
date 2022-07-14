@@ -26,6 +26,27 @@ spec:
   selector:
     com.bhn.service: apistudio
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    com.bhn.service: devportal
+  name: devportal
+  namespace: api
+spec:
+  ports:
+    - name: "admin"
+      port: 9443
+      targetPort: 9443
+    - name: "nio"
+      port: 8280
+      targetPort: 8280
+    - name: "nio-secure"
+      port: 8243
+      targetPort: 8243
+  selector:
+    com.bhn.service: devportal
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,6 +95,58 @@ spec:
       restartPolicy: Always
 status: {}
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    com.bhn.service: devportal
+  name: devportal
+  namespace: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      com.bhn.service: devportal
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        com.bhn.service: devportal
+    spec:
+      containers:
+        - env:
+            - name: PLACEHOLDER
+              value: "true"
+            - name: DEVPORTAL_HOST
+              value: "true"
+            - name: ENV_API_HOSTNAME
+              value: "$(ENV_DEVPORTAL_HOSTNAME)"
+          image: 982306614752.dkr.ecr.us-west-2.amazonaws.com/wso2-apim:latest
+          name: devportal
+          ports:
+            - containerPort: 9443
+            - containerPort: 8280
+            - containerPort: 8243
+          resources: {}
+          volumeMounts:
+            - name: keycloak-keystore
+              readOnly: true
+              mountPath: /home/wso2carbon/wso2-config-volume/keycloak.crt
+              subPath: keycloak.crt
+          envFrom:
+            - configMapRef:
+                name: env-bindings-cm
+      volumes:
+        - name: keycloak-keystore
+          secret:
+            secretName: keycloak-keystore
+            items:
+              - key: keycloak.crt
+                path: keycloak.crt
+            defaultMode: 420
+      restartPolicy: Always
+status: {}
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -92,6 +165,7 @@ spec:
     hosts:
     - apigw.bhn.technology
     - apistudio.bhn.technology
+    - developer.internal.bhn.technology
   rules:
     - host: apistudio.bhn.technology
       http:
@@ -113,89 +187,16 @@ spec:
               name: apistudio
               port:
                 number: 8243
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  namespace: api
-  name: ingress-nginx-developer-devportal
-  labels:
-    app.kubernetes.io/name: ingress-nginx-developer
-    app.kubernetes.io/part-of: ingress-nginx-developer
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    #nginx.ingress.kubernetes.io/app-root: /devportal/
-    nginx.ingress.kubernetes.io/proxy-cookie-path: '/ "/; SameSite=None"'
-#   nginx.ingress.kubernetes.io/configuration-snippet: |
-#      proxy_cookie_path / "/; SameSite=None";
-
-spec:
-  tls:
-  - secretName: tls-cert
-    hosts:
-    - developer.internal.bhn.technology
-  rules:
     - host: developer.internal.bhn.technology
       http:
-        paths:
-        - path: /devportal/
-          pathType: Prefix
-          backend:
-            service:
-              name: apistudio
-              port:
-                number: 9443
+        paths:        
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: apistudio
+              name: devportal
               port:
                 number: 9443
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  namespace: api
-  name: ingress-nginx-developer
-  labels:
-    app.kubernetes.io/name: ingress-nginx-developer
-    app.kubernetes.io/part-of: ingress-nginx-developer
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    #nginx.ingress.kubernetes.io/app-root: /devportal/
-    nginx.ingress.kubernetes.io/rewrite-target: /devportal/$1
-    nginx.ingress.kubernetes.io/proxy-cookie-path: '/ "/; SameSite=None"'
-#   nginx.ingress.kubernetes.io/configuration-snippet: |
-#      proxy_cookie_path / "/; SameSite=None";
-
-spec:
-  tls:
-  - secretName: tls-cert
-    hosts:
-    - developer.internal.bhn.technology
-  rules:
-    - host: developer.internal.bhn.technology
-      http:
-        paths:
-        - path: /(?!devportal|api|authenticationendpoint|logincontext|commonauth|oidc)(.*)
-          pathType: Prefix
-          backend:
-            service:
-              name: apistudio
-              port:
-                number: 9443
-        - path: /(site)
-          pathType: Prefix
-          backend:
-            service:
-              name: apistudio
-              port:
-                number: 9443
-
-
 ---
 #regexp=(https://developer.internal.bhn.technology/devportal/services/auth/callback/login|https://developer.internal.bhn.technology/devportal/services/auth/callback/logout)
 #regexp=(https://developer.internal.bhn.technology/services/auth/callback/login|https://developer.internal.bhn.technology/services/auth/callback/logout)
