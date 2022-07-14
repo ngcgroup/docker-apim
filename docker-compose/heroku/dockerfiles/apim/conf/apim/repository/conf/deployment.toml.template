@@ -285,3 +285,4 @@ proxyPort = 443
 
 [tenant_mgt]
 tenant_deletion=true
+enable_email_domain=true
