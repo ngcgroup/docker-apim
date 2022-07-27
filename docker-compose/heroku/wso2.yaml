@@ -166,6 +166,7 @@ spec:
     - apigw.bhn.technology
     - apistudio.bhn.technology
     - developer.internal.bhn.technology
+    - md2.apistudio.bhn.technology
   rules:
     - host: apistudio.bhn.technology
       http:
@@ -195,6 +196,16 @@ spec:
           backend:
             service:
               name: devportal
+              port:
+                number: 9443
+    - host: md2.apistudio.bhn.technology
+      http:
+        paths:        
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: apistudio
               port:
                 number: 9443
 ---
