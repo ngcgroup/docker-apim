@@ -137,15 +137,15 @@ oidc_check_session_endpoint = "https://ENV_API_HOSTNAME/oidc/checksession"
 #oidc_logout_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/logout"
 #oidc_check_session_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/checksession"
 
-#[apim.jwt]
-#enable = true
-#encoding = "base64" # base64,base64url
+[apim.jwt]
+enable = true
+encoding = "base64" # base64,base64url
 #generator_impl = "org.wso2.carbon.apimgt.keymgt.token.JWTGenerator"
-#claim_dialect = "http://wso2.org/claims"
-#convert_dialect = false
-#header = "X-JWT-Assertion"
+claim_dialect = "http://wso2.org/claims"
+convert_dialect = false
+header = "X-JWT-Assertion"
 #signing_algorithm = "SHA256withRSA"
-#enable_user_claims = true
+enable_user_claims = true
 #claims_extractor_impl = "org.wso2.carbon.apimgt.impl.token.ExtendedDefaultClaimsRetriever"
 
 #[apim.oauth_config]
@@ -286,3 +286,6 @@ proxyPort = 443
 [tenant_mgt]
 tenant_deletion=true
 enable_email_domain=true
+
+[apim.jwt.gateway_generator]
+impl = "com.bhn.apim.CustomGatewayJWTGenerator"
