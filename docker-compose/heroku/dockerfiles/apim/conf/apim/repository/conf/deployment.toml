@@ -282,3 +282,6 @@ allow_refresh_tokens = true
 iat_validity_period = "1h"
 [transport.https.properties]
 proxyPort = 443
+
+[user_store.properties]
+UsernameJavaScriptRegEx="^[\\S]{3,50}$"
